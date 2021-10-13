@@ -36,6 +36,6 @@ func main() {
 	fmt.Println(newSlice)
 	fmt.Println(intsSlice)
 
-	intsSlice = (intsSlice)
+	intsSlice = double(intsSlice)
 	fmt.Println(intsSlice)
 }
