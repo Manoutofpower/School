@@ -15,6 +15,32 @@ type test struct {
 	args args
 }
 
+func ZeroTurns(t *testing.T) {
+	test := test{"1 turn", args{
+		p: golParams{
+			turns:       1,
+			imageWidth:  16,
+			imageHeight: 16,
+		},
+		expectedAlive: []cell{
+			{x: 3, y: 6},
+			{x: 5, y: 6},
+			{x: 4, y: 7},
+			{x: 5, y: 7},
+			{x: 4, y: 8},
+		},
+	}}
+	initial16x16World := readPgmImage(golParams{turns: 0, imageWidth: 16, imageHeight: 16}, "images/16x16.pgm")
+	testName := fmt.Sprintf("%dx%dx%d", test.args.p.imageWidth, test.args.p.imageHeight, test.args.p.turns)
+	VisualiseMatrix(initial16x16World,16,16)
+	t.Run(testName, func(t *testing.T) {
+		world := gameOfLife(test.args.p, initial16x16World)
+		aliveCells := calculateAliveCells(test.args.p, world)
+		assertEqualBoard(t, aliveCells, test.args.expectedAlive, test.args.p)
+	})
+
+}
+
 func TestGol(t *testing.T) {
 	tests := []test{
 		{"0 turns", args{
