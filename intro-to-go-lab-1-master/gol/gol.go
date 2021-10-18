@@ -7,6 +7,7 @@ var (
 
 func calculateNextState(p golParams, world [][]byte) [][]byte {
 	w := copyWorld(world)
+	VisualiseMatrix(w, 16, 16)
 	for y := 0; y < p.imageHeight; y++ {
 		for x := 0; x < p.imageWidth; x++ {
 			numOfLive, _ := calculateNeighbours(x, y, w)
@@ -39,14 +40,14 @@ func copyWorld(world [][]byte) [][]byte {
 
 func calculateNeighbours(x1 int, y1 int, world [][]byte) (numOfLive int, numOfDead int) {
 	for y := y1 - 1; y <= y1+1; y++ {
+		yn := (y + len(world)) % len(world)
 		for x := x1 - 1; x <= x1+1; x++ {
-			if (x >= 0 && y >= 0) &&
-				(y < len(world) && x < len(world[0])) &&
-				!(x == x1 && y == y1) {
-				if world[y][x] == ALive {
+			xn := (x + len(world[yn])) % len(world[yn])
+			if !(xn == x1 && yn == y1) {
+				if world[yn][xn] == ALive {
 					numOfLive = numOfLive + 1
 				}
-				if world[y][x] == Dead {
+				if world[yn][xn] == Dead {
 					numOfDead = numOfDead + 1
 				}
 			}
